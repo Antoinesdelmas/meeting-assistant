@@ -31,7 +31,7 @@
     }
 
     header {
-      padding: 32px 40px 24px;
+      padding: 24px 40px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
@@ -40,12 +40,28 @@
 
     .logo {
       font-family: 'DM Serif Display', serif;
-      font-size: 28px;
+      font-size: 26px;
       letter-spacing: -0.5px;
-      color: var(--text);
     }
 
     .logo span { color: var(--accent); font-style: italic; }
+
+    .nav-tabs { display: flex; gap: 4px; }
+
+    .nav-tab {
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-tab.active { border-color: var(--border); background: var(--surface); color: var(--text); }
+    .nav-tab:hover:not(.active) { color: var(--text); }
 
     .status-pill {
       display: flex;
@@ -59,282 +75,33 @@
       transition: all 0.3s;
     }
 
-    .status-pill.recording {
-      border-color: var(--red);
-      color: var(--red);
-      background: rgba(255,68,68,0.08);
-    }
+    .status-pill.recording { border-color: var(--red); color: var(--red); background: rgba(255,68,68,0.08); }
 
-    .status-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--muted);
-      transition: all 0.3s;
-    }
-
-    .status-pill.recording .status-dot {
-      background: var(--red);
-      animation: pulse 1.2s ease-in-out infinite;
-    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); transition: all 0.3s; }
+    .status-pill.recording .status-dot { background: var(--red); animation: pulse 1.2s ease-in-out infinite; }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.4; transform: scale(0.8); }
     }
 
-    main {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto 1fr;
-      gap: 1px;
-      background: var(--border);
-      overflow: hidden;
-    }
+    .page { display: none; flex-direction: column; flex: 1; }
+    .page.active { display: flex; }
 
-    .panel {
-      background: var(--bg);
-      padding: 32px 36px;
-      overflow-y: auto;
-    }
-
-    .panel-header {
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    /* Controls panel - full width top */
-    .controls-panel {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      padding: 24px 36px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .btn-record {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 28px;
-      border-radius: var(--radius);
-      border: none;
-      background: var(--accent);
-      color: #000;
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.5px;
-    }
-
-    .btn-record:hover { background: #d4f545; transform: translateY(-1px); }
-
-    .btn-record.recording {
-      background: var(--red);
-      color: #fff;
-    }
-
-    .btn-record.recording:hover { background: #ff5555; }
-
-    .btn-analyze {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 28px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.5px;
-    }
-
-    .btn-analyze:hover:not(:disabled) {
-      border-color: var(--accent2);
-      color: var(--accent2);
-      transform: translateY(-1px);
-    }
-
-    .btn-analyze:disabled { opacity: 0.3; cursor: not-allowed; }
-
-    .btn-clear {
-      margin-left: auto;
-      padding: 10px 20px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-clear:hover { border-color: var(--muted); color: var(--text); }
-
-    .timer {
-      font-family: 'DM Serif Display', serif;
-      font-size: 22px;
-      color: var(--muted);
-      letter-spacing: 2px;
-      transition: color 0.3s;
-    }
-
-    .timer.active { color: var(--red); }
-
-    /* Transcript panel */
-    #transcript-box {
-      min-height: 200px;
-      background: var(--surface2);
-      border-radius: var(--radius);
-      padding: 20px;
-      font-size: 14px;
-      line-height: 1.8;
-      color: var(--text);
-      border: 1px solid var(--border);
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    #transcript-box.empty {
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    #interim-text {
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    /* Analysis panel */
-    #analysis-box {
-      min-height: 200px;
-    }
-
-    .loading-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 60px 20px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .spinner {
-      width: 32px; height: 32px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .analysis-section {
-      margin-bottom: 28px;
-    }
-
-    .analysis-section h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 16px;
-      font-style: italic;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .analysis-section h3 .icon {
-      font-style: normal;
-      font-size: 18px;
-    }
-
-    .analysis-section.good h3 { color: var(--accent); }
-    .analysis-section.avoid h3 { color: var(--red); }
-    .analysis-section.steps h3 { color: var(--accent2); }
-    .analysis-section.behavior h3 { color: #a78bfa; }
-    .analysis-section.summary h3 { color: var(--text); }
-
-    .analysis-section p, .analysis-section li {
-      font-size: 13px;
-      line-height: 1.8;
-      color: #bbb;
-    }
-
-    .analysis-section ul {
-      padding-left: 16px;
-    }
-
-    .analysis-section li {
-      margin-bottom: 6px;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 100px;
-      font-size: 11px;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-    }
-
-    .tag.good { background: rgba(200,241,53,0.12); color: var(--accent); border: 1px solid rgba(200,241,53,0.25); }
-    .tag.avoid { background: rgba(255,68,68,0.1); color: var(--red); border: 1px solid rgba(255,68,68,0.2); }
-    .tag.steps { background: rgba(241,193,53,0.1); color: var(--accent2); border: 1px solid rgba(241,193,53,0.2); }
-    .tag.behavior { background: rgba(167,139,250,0.1); color: #a78bfa; border: 1px solid rgba(167,139,250,0.2); }
-
-    .empty-analysis {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .empty-analysis .big-icon { font-size: 40px; opacity: 0.3; }
-    .empty-analysis p { color: var(--muted); font-size: 13px; line-height: 1.7; }
-
-    .word-count {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 10px;
-    }
-
-    /* API key input */
     .api-key-bar {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 16px 36px;
+      padding: 14px 36px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
     }
 
-    .api-key-bar label {
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-    }
+    .api-key-bar label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
 
     .api-key-bar input {
       flex: 1;
-      max-width: 400px;
+      max-width: 380px;
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -346,17 +113,150 @@
     }
 
     .api-key-bar input:focus { border-color: var(--accent); }
+    .api-note { font-size: 11px; color: var(--muted); }
 
-    .api-note {
-      font-size: 11px;
-      color: var(--muted);
+    .controls-panel {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 36px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
     }
+
+    .btn-record {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 22px; border-radius: var(--radius); border: none;
+      background: var(--accent); color: #000;
+      font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+
+    .btn-record:hover { background: #d4f545; transform: translateY(-1px); }
+    .btn-record.recording { background: var(--red); color: #fff; }
+
+    .btn-analyze, .btn-save {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: var(--radius);
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text); font-family: 'DM Mono', monospace;
+      font-size: 13px; cursor: pointer; transition: all 0.2s;
+    }
+
+    .btn-analyze:hover:not(:disabled) { border-color: var(--accent2); color: var(--accent2); }
+    .btn-save:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+    .btn-analyze:disabled, .btn-save:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    .btn-clear {
+      margin-left: auto; padding: 10px 16px;
+      border-radius: var(--radius); border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      font-family: 'DM Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.2s;
+    }
+
+    .btn-clear:hover { color: var(--text); border-color: var(--muted); }
+
+    .timer { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--muted); letter-spacing: 2px; transition: color 0.3s; }
+    .timer.active { color: var(--red); }
+
+    main { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); overflow: hidden; }
+
+    .panel { background: var(--bg); padding: 26px 30px; overflow-y: auto; }
+    .panel-header { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+
+    #transcript-box {
+      min-height: 200px; background: var(--surface2); border-radius: var(--radius);
+      padding: 18px; font-size: 14px; line-height: 1.8; color: var(--text);
+      border: 1px solid var(--border); white-space: pre-wrap; word-break: break-word;
+    }
+
+    #transcript-box.empty { color: var(--muted); font-style: italic; }
+    #interim-text { color: var(--muted); font-style: italic; }
+    .word-count { font-size: 11px; color: var(--muted); margin-top: 10px; }
+
+    .loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 60px 20px; color: var(--muted); font-size: 13px; }
+
+    .spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .analysis-section { margin-bottom: 22px; }
+
+    .analysis-section h3 { font-family: 'DM Serif Display', serif; font-size: 15px; font-style: italic; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+    .analysis-section.good h3 { color: var(--accent); }
+    .analysis-section.avoid h3 { color: var(--red); }
+    .analysis-section.steps h3 { color: var(--accent2); }
+    .analysis-section.behavior h3 { color: #a78bfa; }
+    .analysis-section.summary h3 { color: var(--text); }
+    .analysis-section p, .analysis-section li { font-size: 13px; line-height: 1.8; color: #bbb; }
+    .analysis-section ul { padding-left: 16px; }
+    .analysis-section li { margin-bottom: 5px; }
+
+    .tag { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
+    .tag.good { background: rgba(200,241,53,0.12); color: var(--accent); border: 1px solid rgba(200,241,53,0.25); }
+    .tag.avoid { background: rgba(255,68,68,0.1); color: var(--red); border: 1px solid rgba(255,68,68,0.2); }
+    .tag.steps { background: rgba(241,193,53,0.1); color: var(--accent2); border: 1px solid rgba(241,193,53,0.2); }
+    .tag.behavior { background: rgba(167,139,250,0.1); color: #a78bfa; border: 1px solid rgba(167,139,250,0.2); }
+
+    .empty-analysis { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 60px 20px; text-align: center; }
+    .empty-analysis .big-icon { font-size: 40px; opacity: 0.3; }
+    .empty-analysis p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+    /* HISTORY */
+    .history-page { flex: 1; padding: 36px 40px; overflow-y: auto; }
+
+    .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+    .history-title { font-family: 'DM Serif Display', serif; font-size: 22px; font-style: italic; }
+    .history-count { font-size: 12px; color: var(--muted); }
+
+    .meeting-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .meeting-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; cursor: pointer; transition: all 0.2s; }
+    .meeting-card:hover { border-color: #444; background: var(--surface2); }
+
+    .meeting-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .meeting-date { font-size: 12px; color: var(--muted); }
+    .meeting-score { font-family: 'DM Serif Display', serif; font-size: 18px; }
+    .meeting-summary { font-size: 13px; color: #999; line-height: 1.6; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .meeting-actions { display: flex; gap: 8px; }
+
+    .btn-sm { padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; transition: all 0.2s; }
+    .btn-sm:hover { color: var(--text); border-color: #555; }
+    .btn-sm.danger:hover { color: var(--red); border-color: var(--red); }
+    .btn-sm.download:hover { color: var(--accent); border-color: var(--accent); }
+
+    .empty-history { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 80px 20px; text-align: center; }
+    .empty-history .big-icon { font-size: 48px; opacity: 0.2; }
+    .empty-history p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; overflow-y: auto; padding: 40px 20px; }
+    .modal-overlay.open { display: block; }
+
+    .modal { max-width: 860px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 28px; border-bottom: 1px solid var(--border); }
+    .modal-title { font-family: 'DM Serif Display', serif; font-size: 18px; font-style: italic; }
+    .modal-actions { display: flex; gap: 8px; }
+
+    .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+    .modal-panel { background: var(--surface); padding: 24px 28px; overflow-y: auto; max-height: 65vh; }
+    .modal-panel-title { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .modal-transcript { font-size: 13px; line-height: 1.8; color: #bbb; white-space: pre-wrap; }
+
+    .btn-close { padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 12px; cursor: pointer; }
+    .btn-close:hover { color: var(--text); }
+
+    select { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px; cursor: pointer; outline: none; }
+
+    .save-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--accent); color: #000; padding: 12px 24px; border-radius: 100px; font-size: 13px; font-weight: 500; transition: transform 0.3s ease; z-index: 200; }
+    .save-toast.show { transform: translateX(-50%) translateY(0); }
 
     @media (max-width: 768px) {
       main { grid-template-columns: 1fr; }
-      .controls-panel { flex-wrap: wrap; }
-      header { padding: 20px; }
-      .panel { padding: 20px; }
+      .modal-body { grid-template-columns: 1fr; }
+      .controls-panel { gap: 10px; }
     }
   </style>
 </head>
@@ -364,53 +264,90 @@
 
 <header>
   <div class="logo">Meeting <span>Mind</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('recorder', this)">⏺ Recorder</button>
+    <button class="nav-tab" id="history-tab" onclick="showPage('history', this)">📁 History</button>
+  </div>
   <div class="status-pill" id="status-pill">
     <div class="status-dot"></div>
     <span id="status-text">Ready</span>
   </div>
 </header>
 
-<div class="api-key-bar">
-  <label>Claude API Key</label>
-  <input type="password" id="api-key" placeholder="sk-ant-..." />
-  <span class="api-note">Stored locally in your browser only</span>
-</div>
-
-<div class="controls-panel">
-  <select id="lang-select" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;outline:none;">
-    <option value="en-US">🇬🇧 English</option>
-    <option value="fr-FR">🇫🇷 Français</option>
-  </select>
-  <button class="btn-record" id="btn-record" onclick="toggleRecording()">
-    <span id="btn-icon">⏺</span>
-    <span id="btn-label">Start Recording</span>
-  </button>
-  <button class="btn-analyze" id="btn-analyze" onclick="analyzeTranscript()" disabled>
-    ✦ Analyze Meeting
-  </button>
-  <div class="timer" id="timer">00:00</div>
-  <button class="btn-clear" onclick="clearAll()">↺ Clear</button>
-</div>
-
-<main>
-  <div class="panel">
-    <div class="panel-header">Live Transcript</div>
-    <div id="transcript-box" class="empty">
-      Press <strong>Start Recording</strong> and speak — your meeting will be transcribed here in real time...
-    </div>
-    <div class="word-count" id="word-count"></div>
+<!-- RECORDER PAGE -->
+<div class="page active" id="page-recorder">
+  <div class="api-key-bar">
+    <label>Claude API Key</label>
+    <input type="password" id="api-key" placeholder="sk-ant-..." />
+    <span class="api-note">Stored locally in your browser only</span>
   </div>
+  <div class="controls-panel">
+    <select id="lang-select">
+      <option value="en-US">🇬🇧 English</option>
+      <option value="fr-FR">🇫🇷 Français</option>
+    </select>
+    <button class="btn-record" id="btn-record" onclick="toggleRecording()">
+      <span id="btn-icon">⏺</span>
+      <span id="btn-label">Start Recording</span>
+    </button>
+    <button class="btn-analyze" id="btn-analyze" onclick="analyzeTranscript()" disabled>✦ Analyze</button>
+    <button class="btn-save" id="btn-save" onclick="saveMeeting()" disabled>↓ Save</button>
+    <div class="timer" id="timer">00:00</div>
+    <button class="btn-clear" onclick="clearAll()">↺ Clear</button>
+  </div>
+  <main>
+    <div class="panel">
+      <div class="panel-header">Live Transcript</div>
+      <div id="transcript-box" class="empty">Press <strong>Start Recording</strong> and speak — your meeting will be transcribed here in real time...</div>
+      <div class="word-count" id="word-count"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">AI Analysis</div>
+      <div id="analysis-box">
+        <div class="empty-analysis">
+          <div class="big-icon">🧠</div>
+          <p>Record your meeting, then click<br/><strong>Analyze</strong> to get behavioral insights,<br/>next steps, and communication feedback.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
 
-  <div class="panel">
-    <div class="panel-header">AI Analysis</div>
-    <div id="analysis-box">
-      <div class="empty-analysis">
-        <div class="big-icon">🧠</div>
-        <p>Record your meeting, then click<br/><strong>Analyze Meeting</strong> to get behavioral insights,<br/>next steps, and communication feedback.</p>
+<!-- HISTORY PAGE -->
+<div class="page" id="page-history">
+  <div class="history-page">
+    <div class="history-header">
+      <div class="history-title">Meeting History</div>
+      <div class="history-count" id="history-count"></div>
+    </div>
+    <div class="meeting-list" id="meeting-list"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Meeting Details</div>
+      <div class="modal-actions">
+        <button class="btn-sm download" onclick="downloadMeeting(currentModalId)">↓ Download</button>
+        <button class="btn-close" onclick="closeModalDirect()">✕ Close</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-panel">
+        <div class="modal-panel-title">Transcript</div>
+        <div class="modal-transcript" id="modal-transcript"></div>
+      </div>
+      <div class="modal-panel">
+        <div class="modal-panel-title">AI Analysis</div>
+        <div id="modal-analysis"></div>
       </div>
     </div>
   </div>
-</main>
+</div>
+
+<div class="save-toast" id="save-toast">✓ Meeting saved to history!</div>
 
 <script>
   let recognition = null;
@@ -418,13 +355,20 @@
   let finalTranscript = '';
   let timerInterval = null;
   let seconds = 0;
+  let currentAnalysis = null;
+  let currentModalId = null;
 
-  // Load saved API key
   const apiKeyInput = document.getElementById('api-key');
   apiKeyInput.value = localStorage.getItem('claude_api_key') || '';
-  apiKeyInput.addEventListener('change', () => {
-    localStorage.setItem('claude_api_key', apiKeyInput.value);
-  });
+  apiKeyInput.addEventListener('change', () => localStorage.setItem('claude_api_key', apiKeyInput.value));
+
+  function showPage(page, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    if (btn) btn.classList.add('active');
+    if (page === 'history') renderHistory();
+  }
 
   function toggleRecording() {
     if (isRecording) stopRecording();
@@ -433,31 +377,23 @@
 
   function startRecording() {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('Speech recognition is not supported in this browser. Please use Chrome or Edge.');
+      alert('Speech recognition not supported. Please use Chrome or Edge.');
       return;
     }
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SpeechRecognition();
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR();
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = document.getElementById('lang-select').value;
 
-    recognition.onstart = () => {
-      isRecording = true;
-      updateUI();
-      startTimer();
-    };
+    recognition.onstart = () => { isRecording = true; updateUI(); startTimer(); };
 
     recognition.onresult = (event) => {
       let interim = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          finalTranscript += transcript + ' ';
-        } else {
-          interim += transcript;
-        }
+        const t = event.results[i][0].transcript;
+        if (event.results[i].isFinal) finalTranscript += t + ' ';
+        else interim += t;
       }
       renderTranscript(interim);
     };
@@ -465,19 +401,13 @@
     recognition.onerror = (event) => {
       console.error('Speech recognition error:', event.error);
       if (event.error === 'not-allowed') {
-        alert('Microphone access was denied.\n\nPlease:\n1. Click the 🔒 icon in your browser address bar\n2. Allow microphone access\n3. Refresh the page and try again');
-        isRecording = false;
-        stopTimer();
-        updateUI();
+        alert('Microphone access denied.\n\n1. Click the 🔒 in the address bar\n2. Allow microphone\n3. Refresh the page');
+        isRecording = false; stopTimer(); updateUI();
       }
     };
 
     recognition.onend = () => {
-      if (isRecording) {
-        setTimeout(() => {
-          try { recognition.start(); } catch(e) {}
-        }, 200);
-      }
+      if (isRecording) setTimeout(() => { try { recognition.start(); } catch(e) {} }, 200);
     };
 
     recognition.start();
@@ -486,49 +416,36 @@
   function stopRecording() {
     isRecording = false;
     if (recognition) recognition.stop();
-    stopTimer();
-    updateUI();
-    renderTranscript('');
+    stopTimer(); updateUI(); renderTranscript('');
   }
 
   function renderTranscript(interim) {
     const box = document.getElementById('transcript-box');
     box.classList.remove('empty');
-
     const words = finalTranscript.trim().split(/\s+/).filter(Boolean);
     document.getElementById('word-count').textContent = `${words.length} words`;
-
-    box.innerHTML = finalTranscript +
-      (interim ? `<span id="interim-text">${interim}</span>` : '');
-
+    box.innerHTML = finalTranscript + (interim ? `<span id="interim-text">${interim}</span>` : '');
     box.scrollTop = box.scrollHeight;
-
     document.getElementById('btn-analyze').disabled = words.length < 10;
   }
 
   function updateUI() {
     const pill = document.getElementById('status-pill');
-    const dot = pill.querySelector('.status-dot');
-    const statusText = document.getElementById('status-text');
-    const btnIcon = document.getElementById('btn-icon');
-    const btnLabel = document.getElementById('btn-label');
     const btn = document.getElementById('btn-record');
-    const timer = document.getElementById('timer');
-
     if (isRecording) {
       pill.classList.add('recording');
-      statusText.textContent = 'Recording';
-      btnIcon.textContent = '⏹';
-      btnLabel.textContent = 'Stop Recording';
+      document.getElementById('status-text').textContent = 'Recording';
+      document.getElementById('btn-icon').textContent = '⏹';
+      document.getElementById('btn-label').textContent = 'Stop Recording';
       btn.classList.add('recording');
-      timer.classList.add('active');
+      document.getElementById('timer').classList.add('active');
     } else {
       pill.classList.remove('recording');
-      statusText.textContent = finalTranscript ? 'Stopped' : 'Ready';
-      btnIcon.textContent = '⏺';
-      btnLabel.textContent = 'Start Recording';
+      document.getElementById('status-text').textContent = finalTranscript ? 'Stopped' : 'Ready';
+      document.getElementById('btn-icon').textContent = '⏺';
+      document.getElementById('btn-label').textContent = 'Start Recording';
       btn.classList.remove('recording');
-      timer.classList.remove('active');
+      document.getElementById('timer').classList.remove('active');
     }
   }
 
@@ -542,45 +459,32 @@
     }, 1000);
   }
 
-  function stopTimer() {
-    clearInterval(timerInterval);
-  }
+  function stopTimer() { clearInterval(timerInterval); }
 
   function clearAll() {
     if (isRecording) stopRecording();
-    finalTranscript = '';
-    seconds = 0;
+    finalTranscript = ''; currentAnalysis = null; seconds = 0;
     document.getElementById('timer').textContent = '00:00';
     document.getElementById('word-count').textContent = '';
     const box = document.getElementById('transcript-box');
     box.innerHTML = 'Press <strong>Start Recording</strong> and speak — your meeting will be transcribed here in real time...';
     box.classList.add('empty');
     document.getElementById('btn-analyze').disabled = true;
-    document.getElementById('analysis-box').innerHTML = `
-      <div class="empty-analysis">
-        <div class="big-icon">🧠</div>
-        <p>Record your meeting, then click<br/><strong>Analyze Meeting</strong> to get behavioral insights,<br/>next steps, and communication feedback.</p>
-      </div>`;
+    document.getElementById('btn-save').disabled = true;
+    document.getElementById('analysis-box').innerHTML = `<div class="empty-analysis"><div class="big-icon">🧠</div><p>Record your meeting, then click<br/><strong>Analyze</strong> to get behavioral insights.</p></div>`;
     updateUI();
   }
 
   async function analyzeTranscript() {
     const apiKey = document.getElementById('api-key').value.trim();
-    if (!apiKey) {
-      alert('Please enter your Claude API key at the top.');
-      return;
-    }
-
-    if (!finalTranscript.trim()) {
-      alert('No transcript to analyze.');
-      return;
-    }
+    if (!apiKey) { alert('Please enter your Claude API key.'); return; }
+    if (!finalTranscript.trim()) { alert('No transcript to analyze.'); return; }
 
     const analysisBox = document.getElementById('analysis-box');
     analysisBox.innerHTML = `<div class="loading-state"><div class="spinner"></div><span>Analyzing your meeting...</span></div>`;
     document.getElementById('btn-analyze').disabled = true;
 
-    const prompt = `You are an expert in human behavior, communication dynamics, and meeting effectiveness. The transcript may be in English or French — detect the language and respond in the SAME language as the transcript. Analyze this meeting transcript and provide structured insights.
+    const prompt = `You are an expert in human behavior, communication dynamics, and meeting effectiveness. The transcript may be in English or French — detect the language and respond in the SAME language as the transcript.
 
 TRANSCRIPT:
 """
@@ -608,70 +512,194 @@ Focus on: power dynamics, listening vs talking balance, emotional tone, decision
           'anthropic-version': '2023-06-01',
           'anthropic-dangerous-direct-browser-access': 'true'
         },
-        body: JSON.stringify({
-          model: 'claude-opus-4-6',
-          max_tokens: 1000,
-          messages: [{ role: 'user', content: prompt }]
-        })
+        body: JSON.stringify({ model: 'claude-opus-4-6', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
       });
 
       const data = await response.json();
-
       if (data.error) throw new Error(data.error.message);
 
       const text = data.content[0].text;
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error('Could not parse response');
 
-      const analysis = JSON.parse(jsonMatch[0]);
-      renderAnalysis(analysis);
+      currentAnalysis = JSON.parse(jsonMatch[0]);
+      renderAnalysis(currentAnalysis, 'analysis-box');
+      document.getElementById('btn-save').disabled = false;
 
     } catch (err) {
-      analysisBox.innerHTML = `<div class="loading-state" style="color:#ff4444">⚠ Error: ${err.message}<br/><small style="color:#666;margin-top:8px;display:block">Check your API key and try again.</small></div>`;
+      analysisBox.innerHTML = `<div class="loading-state" style="color:#ff4444">⚠ Error: ${err.message}</div>`;
     } finally {
       document.getElementById('btn-analyze').disabled = false;
     }
   }
 
-  function renderAnalysis(a) {
+  function renderAnalysis(a, targetId) {
     const score = a.communication_score || 70;
     const scoreColor = score >= 75 ? 'var(--accent)' : score >= 50 ? 'var(--accent2)' : 'var(--red)';
-
-    document.getElementById('analysis-box').innerHTML = `
+    document.getElementById(targetId).innerHTML = `
       <div class="analysis-section summary">
-        <h3><span class="icon">📋</span> Summary</h3>
+        <h3>📋 Summary</h3>
         <p>${a.summary}</p>
-        <div style="margin-top:14px;display:flex;align-items:center;gap:12px">
-          <span style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Communication Score</span>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:12px">
+          <span style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Score</span>
           <span style="font-family:'DM Serif Display',serif;font-size:22px;color:${scoreColor}">${score}/100</span>
         </div>
       </div>
-
       <div class="analysis-section behavior">
-        <h3><span class="icon">🔍</span> Behavior Patterns</h3>
+        <h3>🔍 Behavior Patterns</h3>
         <span class="tag behavior">BEHAVIORAL INSIGHT</span>
         <ul>${a.behavior_patterns.map(i => `<li>${i}</li>`).join('')}</ul>
       </div>
-
       <div class="analysis-section good">
-        <h3><span class="icon">✓</span> What Went Well</h3>
+        <h3>✓ What Went Well</h3>
         <span class="tag good">STRENGTHS</span>
         <ul>${a.what_went_well.map(i => `<li>${i}</li>`).join('')}</ul>
       </div>
-
       <div class="analysis-section avoid">
-        <h3><span class="icon">✗</span> What to Avoid Next Time</h3>
+        <h3>✗ What to Avoid</h3>
         <span class="tag avoid">WATCH OUT</span>
         <ul>${a.what_to_avoid.map(i => `<li>${i}</li>`).join('')}</ul>
       </div>
-
       <div class="analysis-section steps">
-        <h3><span class="icon">→</span> Next Steps</h3>
+        <h3>→ Next Steps</h3>
         <span class="tag steps">ACTION ITEMS</span>
         <ul>${a.next_steps.map(i => `<li>${i}</li>`).join('')}</ul>
-      </div>
-    `;
+      </div>`;
   }
+
+  function saveMeeting() {
+    if (!finalTranscript || !currentAnalysis) return;
+    const meetings = JSON.parse(localStorage.getItem('meetings') || '[]');
+    meetings.unshift({
+      id: Date.now(),
+      date: new Date().toISOString(),
+      duration: document.getElementById('timer').textContent,
+      transcript: finalTranscript,
+      analysis: currentAnalysis,
+      lang: document.getElementById('lang-select').value
+    });
+    localStorage.setItem('meetings', JSON.stringify(meetings));
+    const toast = document.getElementById('save-toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+    document.getElementById('btn-save').disabled = true;
+    updateHistoryBadge();
+  }
+
+  function updateHistoryBadge() {
+    const meetings = JSON.parse(localStorage.getItem('meetings') || '[]');
+    document.getElementById('history-tab').textContent = `📁 History (${meetings.length})`;
+  }
+
+  function renderHistory() {
+    const meetings = JSON.parse(localStorage.getItem('meetings') || '[]');
+    document.getElementById('history-count').textContent = `${meetings.length} meeting${meetings.length !== 1 ? 's' : ''} saved`;
+
+    if (meetings.length === 0) {
+      document.getElementById('meeting-list').innerHTML = `
+        <div class="empty-history">
+          <div class="big-icon">📭</div>
+          <p>No meetings saved yet.<br/>Record and analyze a meeting,<br/>then click <strong>Save</strong>.</p>
+        </div>`;
+      return;
+    }
+
+    document.getElementById('meeting-list').innerHTML = meetings.map(m => {
+      const date = new Date(m.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const score = m.analysis.communication_score || 70;
+      const scoreColor = score >= 75 ? '#c8f135' : score >= 50 ? '#f1c135' : '#ff4444';
+      return `
+        <div class="meeting-card" onclick="openMeeting(${m.id})">
+          <div class="meeting-card-header">
+            <div class="meeting-date">📅 ${date} · ⏱ ${m.duration}</div>
+            <div class="meeting-score" style="color:${scoreColor}">${score}/100</div>
+          </div>
+          <div class="meeting-summary">${m.analysis.summary}</div>
+          <div class="meeting-actions" onclick="event.stopPropagation()">
+            <button class="btn-sm" onclick="openMeeting(${m.id})">👁 View</button>
+            <button class="btn-sm download" onclick="downloadMeeting(${m.id})">↓ Download</button>
+            <button class="btn-sm danger" onclick="deleteMeeting(${m.id})">✕ Delete</button>
+          </div>
+        </div>`;
+    }).join('');
+
+    updateHistoryBadge();
+  }
+
+  function openMeeting(id) {
+    const meetings = JSON.parse(localStorage.getItem('meetings') || '[]');
+    const m = meetings.find(x => x.id === id);
+    if (!m) return;
+    currentModalId = id;
+    const date = new Date(m.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    document.getElementById('modal-title').textContent = `Meeting — ${date}`;
+    document.getElementById('modal-transcript').textContent = m.transcript;
+    renderAnalysis(m.analysis, 'modal-analysis');
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  function closeModal(event) {
+    if (event.target === document.getElementById('modal-overlay')) closeModalDirect();
+  }
+
+  function closeModalDirect() {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+
+  function deleteMeeting(id) {
+    if (!confirm('Delete this meeting?')) return;
+    let meetings = JSON.parse(localStorage.getItem('meetings') || '[]');
+    meetings = meetings.filter(m => m.id !== id);
+    localStorage.setItem('meetings', JSON.stringify(meetings));
+    renderHistory();
+  }
+
+  function downloadMeeting(id) {
+    const meetings = JSON.parse(localStorage.getItem('meetings') || '[]');
+    const m = meetings.find(x => x.id === id);
+    if (!m) return;
+    const date = new Date(m.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    const a = m.analysis;
+    const content = `MEETING MIND — REPORT
+=====================
+Date: ${date}
+Duration: ${m.duration}
+Communication Score: ${a.communication_score}/100
+
+TRANSCRIPT
+----------
+${m.transcript}
+
+SUMMARY
+-------
+${a.summary}
+
+BEHAVIOR PATTERNS
+-----------------
+${a.behavior_patterns.map((x,i) => `${i+1}. ${x}`).join('\n')}
+
+WHAT WENT WELL
+--------------
+${a.what_went_well.map((x,i) => `${i+1}. ${x}`).join('\n')}
+
+WHAT TO AVOID NEXT TIME
+-----------------------
+${a.what_to_avoid.map((x,i) => `${i+1}. ${x}`).join('\n')}
+
+NEXT STEPS
+----------
+${a.next_steps.map((x,i) => `${i+1}. ${x}`).join('\n')}
+`;
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `meeting-${new Date(m.date).toISOString().split('T')[0]}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  updateHistoryBadge();
 </script>
 </body>
 </html>
