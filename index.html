@@ -386,14 +386,19 @@
     recognition.interimResults = true;
     recognition.lang = document.getElementById('lang-select').value;
 
-    recognition.onstart = () => { isRecording = true; updateUI(); startTimer(); };
+    recognition.onstart = () => {
+      if (!isRecording) { isRecording = true; updateUI(); startTimer(); }
+    };
 
     recognition.onresult = (event) => {
       let interim = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const t = event.results[i][0].transcript;
-        if (event.results[i].isFinal) finalTranscript += t + ' ';
-        else interim += t;
+        if (event.results[i].isFinal) {
+          if (!finalTranscript.endsWith(t + ' ')) finalTranscript += t + ' ';
+        } else {
+          interim += t;
+        }
       }
       renderTranscript(interim);
     };
