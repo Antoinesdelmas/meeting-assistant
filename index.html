@@ -377,6 +377,10 @@
 </div>
 
 <div class="controls-panel">
+  <select id="lang-select" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;outline:none;">
+    <option value="en-US">🇬🇧 English</option>
+    <option value="fr-FR">🇫🇷 Français</option>
+  </select>
   <button class="btn-record" id="btn-record" onclick="toggleRecording()">
     <span id="btn-icon">⏺</span>
     <span id="btn-label">Start Recording</span>
@@ -437,7 +441,7 @@
     recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = 'en-US';
+    recognition.lang = document.getElementById('lang-select').value;
 
     recognition.onstart = () => {
       isRecording = true;
@@ -576,7 +580,7 @@
     analysisBox.innerHTML = `<div class="loading-state"><div class="spinner"></div><span>Analyzing your meeting...</span></div>`;
     document.getElementById('btn-analyze').disabled = true;
 
-    const prompt = `You are an expert in human behavior, communication dynamics, and meeting effectiveness. Analyze this meeting transcript and provide structured insights.
+    const prompt = `You are an expert in human behavior, communication dynamics, and meeting effectiveness. The transcript may be in English or French — detect the language and respond in the SAME language as the transcript. Analyze this meeting transcript and provide structured insights.
 
 TRANSCRIPT:
 """
